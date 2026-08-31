@@ -11,6 +11,7 @@
 		3BC8523E595188BDFEFC0CC1 /* HUDLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6429B499FF2039885F49E697 /* HUDLayoutTests.swift */; };
 		3D5121C4DF485F5D23D1A3C8 /* YokoWhisperApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5669A3D89245E418135F8CC3 /* YokoWhisperApp.swift */; };
 		4D454783A93F9DF73A6646E1 /* BrandTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3391860226E77A5BC051C4 /* BrandTests.swift */; };
+		5A7BE1B76395B7F7711983F8 /* AudioLevelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9581DE1B69D27D36AC2440 /* AudioLevelTests.swift */; };
 		5CF0B4391650D7164E9E91AC /* Brand.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12B485B081145D1D0141922 /* Brand.swift */; };
 		5D7976DAEA20BF2D698D5E49 /* TextInsertionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE5D0D3CBC7641550976D96 /* TextInsertionService.swift */; };
 		60DCBBDBECD3005B2AE962CA /* ShortcutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83F648D4B0C1BDF9B41982A /* ShortcutTests.swift */; };
@@ -59,6 +60,7 @@
 		8D2E3A68B414E45EDDB45EDD /* YokoWhisperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YokoWhisperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6BDFEF09FFEFAF75D611BA2 /* DictationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictationState.swift; sourceTree = "<group>"; };
 		B3567968CA58BDEE88B18E8A /* Permissions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permissions.swift; sourceTree = "<group>"; };
+		BC9581DE1B69D27D36AC2440 /* AudioLevelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioLevelTests.swift; sourceTree = "<group>"; };
 		BDD652973254F91138B97370 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		C23D0A24699606C617A47F80 /* InsertionRecoveryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsertionRecoveryTests.swift; sourceTree = "<group>"; };
 		CBBE328383B244E44135E4DE /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 		611B30AA32F7A07E2938CF08 /* YokoWhisperTests */ = {
 			isa = PBXGroup;
 			children = (
+				BC9581DE1B69D27D36AC2440 /* AudioLevelTests.swift */,
 				2B3391860226E77A5BC051C4 /* BrandTests.swift */,
 				890F39B310B2DDF368C24426 /* DictationStateTests.swift */,
 				6429B499FF2039885F49E697 /* HUDLayoutTests.swift */,
@@ -247,6 +250,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A7BE1B76395B7F7711983F8 /* AudioLevelTests.swift in Sources */,
 				4D454783A93F9DF73A6646E1 /* BrandTests.swift in Sources */,
 				7876471F89B6971488D4AC3E /* DictationStateTests.swift in Sources */,
 				3BC8523E595188BDFEFC0CC1 /* HUDLayoutTests.swift in Sources */,
