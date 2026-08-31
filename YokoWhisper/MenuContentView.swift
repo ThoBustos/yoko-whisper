@@ -104,6 +104,7 @@ struct MenuContentView: View {
         switch model.state {
         case .failure: .red
         case .recording, .transcribing, .inserting: Brand.orange
+        case .copied: Brand.lavender
         default: Brand.success
         }
     }

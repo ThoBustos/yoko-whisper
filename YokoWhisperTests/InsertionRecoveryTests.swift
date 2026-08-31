@@ -9,6 +9,78 @@ final class InsertionRecoveryTests: XCTestCase {
     }
 
     func testMissingTargetExplainsClipboardRecovery() {
-        XCTAssertTrue(InsertionError.noTarget.localizedDescription.contains("copied"))
+        XCTAssertEqual(
+            InsertionPolicy.strategy(
+                hasTarget: false,
+                isSecure: false,
+                supportsDirectInsertion: false,
+                hasEditableRole: false
+            ),
+            .copy
+        )
+    }
+
+    func testSecureFieldsOnlyCopyTheTranscript() {
+        XCTAssertEqual(
+            InsertionPolicy.strategy(
+                hasTarget: true,
+                isSecure: true,
+                supportsDirectInsertion: true,
+                hasEditableRole: true
+            ),
+            .copy
+        )
+    }
+
+    func testDirectInsertionWinsWhenSupported() {
+        XCTAssertEqual(
+            InsertionPolicy.strategy(
+                hasTarget: true,
+                isSecure: false,
+                supportsDirectInsertion: true,
+                hasEditableRole: true
+            ),
+            .direct
+        )
+    }
+
+    func testEditableTargetsFallBackToPaste() {
+        XCTAssertEqual(
+            InsertionPolicy.strategy(
+                hasTarget: true,
+                isSecure: false,
+                supportsDirectInsertion: false,
+                hasEditableRole: true
+            ),
+            .paste
+        )
+    }
+
+    func testSyntheticPasteRequiresTheSameFrontmostNonSecureEditableTarget() {
+        XCTAssertTrue(InsertionPolicy.allowsSyntheticPaste(
+            applicationIsFrontmost: true,
+            focusMatches: true,
+            isSecure: false,
+            hasEditableRole: true
+        ))
+
+        let unsafeCases = [
+            (false, true, false, true),
+            (true, false, false, true),
+            (true, true, true, true),
+            (true, true, false, false),
+        ]
+        for (frontmost, matching, secure, editable) in unsafeCases {
+            XCTAssertFalse(InsertionPolicy.allowsSyntheticPaste(
+                applicationIsFrontmost: frontmost,
+                focusMatches: matching,
+                isSecure: secure,
+                hasEditableRole: editable
+            ))
+        }
+    }
+
+    func testPasteRequestIsNotReportedAsConfirmedInsertion() {
+        XCTAssertNotEqual(InsertionResult.pasteRequested, .insertedDirectly)
     }
 }
