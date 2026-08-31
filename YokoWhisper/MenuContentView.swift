@@ -103,7 +103,7 @@ struct MenuContentView: View {
 
     private func shortcutWarning(_ message: String) -> some View {
         HStack(alignment: .top, spacing: 10) {
-            Image(systemName: "keyboard.badge.exclamationmark").foregroundStyle(Brand.orange)
+            Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(Brand.orange)
             VStack(alignment: .leading, spacing: 5) {
                 Text("Shortcut unavailable").font(.callout.weight(.medium))
                 Text(message).font(.caption).foregroundStyle(.secondary)

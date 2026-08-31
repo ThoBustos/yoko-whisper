@@ -5,6 +5,12 @@ private let shortcutFlagsMask: CGEventFlags = [
     .maskCommand, .maskShift, .maskAlternate, .maskControl, .maskSecondaryFn,
 ]
 
+enum ShortcutTapLifecycle {
+    static func shouldReenable(after type: CGEventType) -> Bool {
+        type == .tapDisabledByTimeout || type == .tapDisabledByUserInput
+    }
+}
+
 private func shortcutEventCallback(
     proxy: CGEventTapProxy,
     type: CGEventType,
@@ -67,7 +73,7 @@ final class ShortcutService: @unchecked Sendable {
     }
 
     fileprivate func handle(type: CGEventType, event: CGEvent) -> Bool {
-        if type == .tapDisabledByTimeout || type == .tapDisabledByUserInput {
+        if ShortcutTapLifecycle.shouldReenable(after: type) {
             if let eventTap { CGEvent.tapEnable(tap: eventTap, enable: true) }
             return false
         }
