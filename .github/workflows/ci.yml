@@ -1,0 +1,11 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v7
+      - run: xcodebuild -project YokoWhisper.xcodeproj -scheme YokoWhisper -destination 'platform=macOS,arch=arm64' CODE_SIGNING_ALLOWED=NO test

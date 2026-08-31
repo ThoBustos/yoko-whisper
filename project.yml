@@ -1,0 +1,50 @@
+name: YokoWhisper
+options:
+  bundleIdPrefix: ai.ideabench
+  deploymentTarget:
+    macOS: "14.0"
+settings:
+  base:
+    ARCHS: arm64
+    SWIFT_VERSION: "6.0"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+packages:
+  ArgmaxOSS:
+    url: https://github.com/argmaxinc/argmax-oss-swift.git
+    exactVersion: 1.1.0
+targets:
+  YokoWhisper:
+    type: application
+    platform: macOS
+    sources: [YokoWhisper]
+    dependencies:
+      - package: ArgmaxOSS
+        product: WhisperKit
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: ai.ideabench.yokowhisper
+        INFOPLIST_KEY_CFBundleDisplayName: Yoko Whisper
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_LSUIElement: YES
+        INFOPLIST_KEY_NSMicrophoneUsageDescription: Yoko Whisper records speech for private on-device transcription.
+        CODE_SIGN_ENTITLEMENTS: YokoWhisper/YokoWhisper.entitlements
+        ENABLE_HARDENED_RUNTIME: YES
+        CODE_SIGN_STYLE: Automatic
+    entitlements:
+      path: YokoWhisper/YokoWhisper.entitlements
+      properties:
+        com.apple.security.device.audio-input: true
+  YokoWhisperTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources: [YokoWhisperTests]
+    dependencies:
+      - target: YokoWhisper
+schemes:
+  YokoWhisper:
+    build:
+      targets:
+        YokoWhisper: all
+        YokoWhisperTests: [test]
+    test:
+      targets: [YokoWhisperTests]
