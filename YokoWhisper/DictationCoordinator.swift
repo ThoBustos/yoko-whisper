@@ -13,6 +13,7 @@ final class DictationCoordinator {
             onStateChange?(state)
             transientTask?.cancel()
             if case .success = state { scheduleIdle() }
+            if case .copied = state { scheduleIdle() }
             if case .cancelled = state { scheduleIdle(after: .milliseconds(500)) }
             if case .failure = state { scheduleIdle(after: .seconds(5)) }
         }
@@ -97,11 +98,12 @@ final class DictationCoordinator {
             lastTranscript = text
             copyLastTranscript()
             state = .inserting
-            do {
-                try await insertion.insert(text, into: focusTarget)
+            let result = await insertion.insert(text, into: focusTarget)
+            switch result {
+            case .insertedDirectly:
                 state = .success(text)
-            } catch {
-                state = .failure(error.localizedDescription, transcript: text)
+            case .pasteRequested, .copiedOnly:
+                state = .copied(text)
             }
         } catch {
             logger.error("Transcription failed: \(error.localizedDescription, privacy: .public)")

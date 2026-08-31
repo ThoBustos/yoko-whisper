@@ -48,7 +48,7 @@ final class HUDController {
         case .recording:
             displayScreen = screenAtPointer() ?? NSScreen.main
             show()
-        case .transcribing, .inserting, .success, .failure:
+        case .transcribing, .inserting, .success, .copied, .failure:
             show()
         default:
             panel.orderOut(nil)
@@ -128,6 +128,9 @@ private struct DictationHUD: View {
             Image(systemName: "checkmark")
                 .fontWeight(.bold)
                 .foregroundStyle(Brand.success)
+        case .copied:
+            Image(systemName: "doc.on.clipboard")
+                .foregroundStyle(Brand.lavender)
         case .failure:
             Image(systemName: "doc.on.clipboard")
                 .foregroundStyle(Brand.lavender)
@@ -142,6 +145,7 @@ private struct DictationHUD: View {
         case .transcribing: "Transcribing"
         case .inserting: "Inserting"
         case .success: "Inserted"
+        case .copied: "Copied"
         case .failure(_, let transcript): transcript == nil ? "Try again" : "Copied"
         default: "Yoko Whisper"
         }

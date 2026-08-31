@@ -6,6 +6,7 @@ enum DictationState: Equatable, Sendable {
     case transcribing
     case inserting
     case success(String)
+    case copied(String)
     case cancelled
     case failure(String, transcript: String?)
 
@@ -16,6 +17,7 @@ enum DictationState: Equatable, Sendable {
         case .transcribing: "TRANSCRIBING"
         case .inserting: "INSERTING"
         case .success: "INSERTED"
+        case .copied: "COPIED"
         case .cancelled: "CANCELLED"
         case .failure: "ERROR"
         }
@@ -23,7 +25,7 @@ enum DictationState: Equatable, Sendable {
 
     var canBeginRecording: Bool {
         switch self {
-        case .idle, .cancelled, .success, .failure: true
+        case .idle, .cancelled, .success, .copied, .failure: true
         default: false
         }
     }
