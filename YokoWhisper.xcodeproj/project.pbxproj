@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		327E78FFF4061703543970EE /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3567968CA58BDEE88B18E8A /* Permissions.swift */; };
+		3BC8523E595188BDFEFC0CC1 /* HUDLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6429B499FF2039885F49E697 /* HUDLayoutTests.swift */; };
 		3D5121C4DF485F5D23D1A3C8 /* YokoWhisperApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5669A3D89245E418135F8CC3 /* YokoWhisperApp.swift */; };
 		4D454783A93F9DF73A6646E1 /* BrandTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3391860226E77A5BC051C4 /* BrandTests.swift */; };
 		5CF0B4391650D7164E9E91AC /* Brand.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12B485B081145D1D0141922 /* Brand.swift */; };
@@ -48,6 +49,7 @@
 		45C5B202E67D63D36E838055 /* PreferencesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesTests.swift; sourceTree = "<group>"; };
 		5669A3D89245E418135F8CC3 /* YokoWhisperApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YokoWhisperApp.swift; sourceTree = "<group>"; };
 		60D7D5DA741E29262A5A1FC5 /* PermissionStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionStateTests.swift; sourceTree = "<group>"; };
+		6429B499FF2039885F49E697 /* HUDLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDLayoutTests.swift; sourceTree = "<group>"; };
 		65E853AECFD0D9A46A1B3D01 /* ShortcutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutService.swift; sourceTree = "<group>"; };
 		669A9F4AAF33BAAC6AF8AEA5 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		71AE30FD9B3DD9514AD9082C /* TranscriptionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptionEngine.swift; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 			children = (
 				2B3391860226E77A5BC051C4 /* BrandTests.swift */,
 				890F39B310B2DDF368C24426 /* DictationStateTests.swift */,
+				6429B499FF2039885F49E697 /* HUDLayoutTests.swift */,
 				C23D0A24699606C617A47F80 /* InsertionRecoveryTests.swift */,
 				60D7D5DA741E29262A5A1FC5 /* PermissionStateTests.swift */,
 				45C5B202E67D63D36E838055 /* PreferencesTests.swift */,
@@ -246,6 +249,7 @@
 			files = (
 				4D454783A93F9DF73A6646E1 /* BrandTests.swift in Sources */,
 				7876471F89B6971488D4AC3E /* DictationStateTests.swift in Sources */,
+				3BC8523E595188BDFEFC0CC1 /* HUDLayoutTests.swift in Sources */,
 				E326DD459B7C37ED5E8ABC6E /* InsertionRecoveryTests.swift in Sources */,
 				6908F301010B86A694776E0C /* PermissionStateTests.swift in Sources */,
 				852B778A7FA34C6237DCD6E7 /* PreferencesTests.swift in Sources */,
