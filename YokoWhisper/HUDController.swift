@@ -69,6 +69,7 @@ final class HUDController {
 }
 
 private struct DictationHUD: View {
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     let model: AppModel
     @State private var isHovering = false
 
@@ -88,11 +89,22 @@ private struct DictationHUD: View {
             }
         }
         .frame(width: HUDLayout.size(for: model.state).width, height: HUDLayout.statusSize.height)
-        .foregroundStyle(Brand.ink)
-        .background(Brand.paper, in: Capsule())
-        .overlay(Capsule().stroke(Brand.ink.opacity(0.2), lineWidth: 0.75))
+        .foregroundStyle(.white)
+        .background { hudBackground }
+        .overlay(Capsule().stroke(.white.opacity(0.18), lineWidth: 0.75))
         .accessibilityElement(children: .combine)
         .accessibilityLabel(label)
+    }
+
+    @ViewBuilder
+    private var hudBackground: some View {
+        if reduceTransparency {
+            Capsule().fill(Color(red: 0.08, green: 0.08, blue: 0.09))
+        } else {
+            HUDMaterialBackground()
+                .overlay(Color.black.opacity(0.35))
+                .clipShape(Capsule())
+        }
     }
 
     private var recordingControl: some View {
@@ -100,7 +112,7 @@ private struct DictationHUD: View {
             LiveWaveform(level: { model.recorder.level })
                 .frame(width: 24, height: 18)
             if isHovering {
-                Divider().frame(height: 16)
+                Divider().overlay(.white.opacity(0.28)).frame(height: 16)
                 Button { model.finishRecordingFromHUD() } label: {
                     Image(systemName: "stop.fill")
                         .font(.system(size: 9, weight: .bold))
@@ -149,6 +161,20 @@ private struct DictationHUD: View {
         case .failure(_, let transcript): transcript == nil ? "Try again" : "Copied"
         default: "Yoko Whisper"
         }
+    }
+}
+
+private struct HUDMaterialBackground: NSViewRepresentable {
+    func makeNSView(context: Context) -> NSVisualEffectView {
+        let view = NSVisualEffectView()
+        view.material = .hudWindow
+        view.blendingMode = .behindWindow
+        view.state = .active
+        return view
+    }
+
+    func updateNSView(_ view: NSVisualEffectView, context: Context) {
+        view.state = .active
     }
 }
 

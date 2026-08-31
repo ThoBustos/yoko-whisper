@@ -16,6 +16,9 @@ struct MenuContentView: View {
                 if model.permissions.microphone != .granted || model.permissions.accessibility != .granted {
                     permissionWarning
                 }
+                if let shortcutError = model.shortcutError {
+                    shortcutWarning(shortcutError)
+                }
                 if let transcript = model.lastTranscript {
                     Divider()
                     VStack(alignment: .leading, spacing: 8) {
@@ -98,6 +101,20 @@ struct MenuContentView: View {
         .background(Brand.orange.opacity(0.12), in: RoundedRectangle(cornerRadius: 8))
     }
 
+    private func shortcutWarning(_ message: String) -> some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: "keyboard.badge.exclamationmark").foregroundStyle(Brand.orange)
+            VStack(alignment: .leading, spacing: 5) {
+                Text("Shortcut unavailable").font(.callout.weight(.medium))
+                Text(message).font(.caption).foregroundStyle(.secondary)
+                Button("Request Access") { model.requestShortcutAccess() }.buttonStyle(.link)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(12)
+        .background(Brand.orange.opacity(0.12), in: RoundedRectangle(cornerRadius: 8))
+    }
+
     private var recording: Bool {
         if case .recording = model.state { return true }
         return false
@@ -126,6 +143,10 @@ struct SettingsView: View {
                 permissionRow("Accessibility", detail: "Inserts text at the original cursor.", state: model.permissions.accessibility) {
                     model.permissions.requestAccessibility()
                 } openPrivacy: { model.permissions.openPrivacyPane("Accessibility") }
+                if let shortcutError = model.shortcutError {
+                    Text(shortcutError).foregroundStyle(.red)
+                    Button("Retry Global Shortcut") { model.requestShortcutAccess() }
+                }
             }
             Section("Dictation") {
                 Picker("Shortcut", selection: Binding(
