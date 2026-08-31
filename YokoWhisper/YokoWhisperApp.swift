@@ -50,7 +50,14 @@ final class AppModel {
     func startIntegrations() {
         guard hud == nil else { return }
         hud = HUDController(model: self)
-        shortcuts.onToggle = { [weak self] in self?.toggleRecording() }
+        shortcuts.onPress = { [weak self] in
+            guard let self, !self.isRecording else { return }
+            self.toggleRecording()
+        }
+        shortcuts.onRelease = { [weak self] in
+            guard let self, self.isRecording else { return }
+            self.toggleRecording()
+        }
         shortcuts.onCancel = { [weak self] in
             guard let self, case .recording = self.state else { return }
             self.cancel()
@@ -76,6 +83,11 @@ final class AppModel {
             catch { recorder.cancel(); state = .failure(error.localizedDescription, transcript: nil) }
         default: break
         }
+    }
+
+    private var isRecording: Bool {
+        if case .recording = state { return true }
+        return false
     }
 
     func cancel() { recorder.cancel(); state = .cancelled }

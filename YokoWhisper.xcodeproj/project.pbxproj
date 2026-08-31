@@ -55,7 +55,7 @@
 		8D2E3A68B414E45EDDB45EDD /* YokoWhisperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YokoWhisperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6BDFEF09FFEFAF75D611BA2 /* DictationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictationState.swift; sourceTree = "<group>"; };
 		B3567968CA58BDEE88B18E8A /* Permissions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permissions.swift; sourceTree = "<group>"; };
-		BDD652973254F91138B97370 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		BDD652973254F91138B97370 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		C23D0A24699606C617A47F80 /* InsertionRecoveryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsertionRecoveryTests.swift; sourceTree = "<group>"; };
 		CBBE328383B244E44135E4DE /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
 		D83F648D4B0C1BDF9B41982A /* ShortcutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutTests.swift; sourceTree = "<group>"; };

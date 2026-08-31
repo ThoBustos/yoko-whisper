@@ -23,13 +23,18 @@ final class ShortcutService: @unchecked Sendable {
     private var escapeMonitor: Any?
     private let lock = NSLock()
     private var activeChoice: ShortcutChoice = .fnSpace
-    var onToggle: (@MainActor @Sendable () -> Void)?
+    private var pressState = ShortcutPressState()
+    var onPress: (@MainActor @Sendable () -> Void)?
+    var onRelease: (@MainActor @Sendable () -> Void)?
     var onCancel: (@MainActor @Sendable () -> Void)?
 
     @MainActor
     func start(choice: ShortcutChoice) {
         stop()
-        lock.withLock { activeChoice = choice }
+        lock.withLock {
+            activeChoice = choice
+            pressState = ShortcutPressState()
+        }
         let mask = (1 << CGEventType.keyDown.rawValue) | (1 << CGEventType.keyUp.rawValue)
         eventTap = CGEvent.tapCreate(
             tap: .cgSessionEventTap,
@@ -64,14 +69,54 @@ final class ShortcutService: @unchecked Sendable {
             if let eventTap { CGEvent.tapEnable(tap: eventTap, enable: true) }
             return false
         }
-        let choice = lock.withLock { activeChoice }
         let keyCode = UInt16(event.getIntegerValueField(.keyboardEventKeycode))
-        guard keyCode == choice.keyCode,
-              event.flags.intersection(shortcutFlagsMask) == choice.eventFlags
-        else { return false }
-        if type == .keyDown, event.getIntegerValueField(.keyboardEventAutorepeat) == 0 {
-            Task { @MainActor [weak self] in self?.onToggle?() }
+        let transition = lock.withLock { () -> ShortcutTransition? in
+            guard keyCode == activeChoice.keyCode else { return nil }
+            let phase: ShortcutKeyPhase
+            switch type {
+            case .keyDown:
+                guard event.flags.intersection(shortcutFlagsMask) == activeChoice.eventFlags else { return nil }
+                phase = .down
+            case .keyUp:
+                phase = .up
+            default:
+                return nil
+            }
+            return pressState.transition(
+                phase,
+                isRepeat: event.getIntegerValueField(.keyboardEventAutorepeat) != 0
+            )
         }
-        return true
+        switch transition {
+        case .pressed:
+            // A serial FIFO queue preserves press/release order while keeping
+            // recording work out of the event-tap callback.
+            DispatchQueue.main.async { @MainActor [weak self] in self?.onPress?() }
+        case .released:
+            DispatchQueue.main.async { @MainActor [weak self] in self?.onRelease?() }
+        case nil:
+            break
+        }
+        return transition != nil || lock.withLock { pressState.isPressed && keyCode == activeChoice.keyCode }
+    }
+}
+
+enum ShortcutKeyPhase: Sendable { case down, up }
+enum ShortcutTransition: Equatable, Sendable { case pressed, released }
+
+struct ShortcutPressState: Sendable {
+    private(set) var isPressed = false
+
+    mutating func transition(_ phase: ShortcutKeyPhase, isRepeat: Bool = false) -> ShortcutTransition? {
+        switch phase {
+        case .down where !isPressed && !isRepeat:
+            isPressed = true
+            return .pressed
+        case .up where isPressed:
+            isPressed = false
+            return .released
+        default:
+            return nil
+        }
     }
 }
