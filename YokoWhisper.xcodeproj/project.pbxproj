@@ -15,6 +15,7 @@
 		60DCBBDBECD3005B2AE962CA /* ShortcutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83F648D4B0C1BDF9B41982A /* ShortcutTests.swift */; };
 		6908F301010B86A694776E0C /* PermissionStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D7D5DA741E29262A5A1FC5 /* PermissionStateTests.swift */; };
 		6B60DF4ECDE53CBEC2D874A9 /* MenuContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8164A5B97036495969C794 /* MenuContentView.swift */; };
+		762040630629009D512CE138 /* DictationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E1FAF13FA3975D165D91B0 /* DictationCoordinator.swift */; };
 		77A170DC032DC68762AD70E6 /* TranscriptionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AE30FD9B3DD9514AD9082C /* TranscriptionEngine.swift */; };
 		7876471F89B6971488D4AC3E /* DictationStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890F39B310B2DDF368C24426 /* DictationStateTests.swift */; };
 		852B778A7FA34C6237DCD6E7 /* PreferencesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C5B202E67D63D36E838055 /* PreferencesTests.swift */; };
@@ -42,6 +43,7 @@
 /* Begin PBXFileReference section */
 		2B3391860226E77A5BC051C4 /* BrandTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandTests.swift; sourceTree = "<group>"; };
 		344F41F94B549A335DDB7A0E /* HUDController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDController.swift; sourceTree = "<group>"; };
+		35E1FAF13FA3975D165D91B0 /* DictationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictationCoordinator.swift; sourceTree = "<group>"; };
 		3EA2BD7175E9B534C93F9D9E /* TranscriptionEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptionEngineTests.swift; sourceTree = "<group>"; };
 		45C5B202E67D63D36E838055 /* PreferencesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesTests.swift; sourceTree = "<group>"; };
 		5669A3D89245E418135F8CC3 /* YokoWhisperApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YokoWhisperApp.swift; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 			children = (
 				CBBE328383B244E44135E4DE /* AudioRecorder.swift */,
 				F12B485B081145D1D0141922 /* Brand.swift */,
+				35E1FAF13FA3975D165D91B0 /* DictationCoordinator.swift */,
 				A6BDFEF09FFEFAF75D611BA2 /* DictationState.swift */,
 				344F41F94B549A335DDB7A0E /* HUDController.swift */,
 				DC8164A5B97036495969C794 /* MenuContentView.swift */,
@@ -224,6 +227,7 @@
 			files = (
 				BA5A63CFF68BA1C85451D5DD /* AudioRecorder.swift in Sources */,
 				5CF0B4391650D7164E9E91AC /* Brand.swift in Sources */,
+				762040630629009D512CE138 /* DictationCoordinator.swift in Sources */,
 				B6EBBA8901C9286CB7C31133 /* DictationState.swift in Sources */,
 				86EE8E4D287C93737127E28C /* HUDController.swift in Sources */,
 				6B60DF4ECDE53CBEC2D874A9 /* MenuContentView.swift in Sources */,
