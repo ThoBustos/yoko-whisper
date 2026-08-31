@@ -5,10 +5,10 @@ Fast, private, on-device voice-to-text for Apple Silicon Macs. Yoko Whisper reco
 ## Features
 
 - Local batch transcription with the `openai_whisper-small` model through WhisperKit
-- Global, configurable start/stop shortcut
+- Global, configurable push-to-talk shortcut
 - Direct Accessibility insertion with paste fallback
 - Clipboard recovery when an app does not support direct insertion
-- Microphone level HUD, Escape cancellation, and optional launch at login
+- Tiny top-screen waveform HUD, Escape cancellation, and optional launch at login
 - No account, backend, telemetry, or cloud upload
 
 ## Requirements
@@ -37,13 +37,17 @@ To run microphone and Accessibility flows, select your own development team for 
 
 `project.yml` is the XcodeGen source of truth when regenerating the project.
 
+See [Architecture](docs/ARCHITECTURE.md) for service boundaries and [Contributing](CONTRIBUTING.md) before proposing changes.
+
 ## Test dictation
 
 1. Run Yoko Whisper and grant Microphone and Accessibility access.
 2. Focus a text field in TextEdit.
-3. Press the configured shortcut (`Fn Space` by default).
-4. Speak, then press the shortcut again.
+3. Hold the configured shortcut (`Fn Space` by default).
+4. Speak, then release the shortcut.
 5. Confirm the transcript appears at the original cursor and remains available with Paste.
+
+If no editable cursor is available, Yoko Whisper leaves the transcript on the clipboard and shows `Copied` instead of claiming it was inserted. Secure text fields are always clipboard-only.
 
 Do not click the menu-bar microphone when testing cursor restoration; doing so changes the active UI away from the intended target. See the [manual test checklist](docs/MANUAL-TEST-CHECKLIST.md) for broader coverage.
 

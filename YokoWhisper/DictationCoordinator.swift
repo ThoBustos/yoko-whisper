@@ -53,12 +53,12 @@ final class DictationCoordinator {
             logger.info("Recording started")
         } catch {
             recorder.cancel()
-            logger.error("Recording failed: \(error.localizedDescription, privacy: .public)")
+            logger.error("Recording failed: \(error.localizedDescription, privacy: .private)")
             state = .failure(error.localizedDescription, transcript: nil)
         }
     }
 
-    func finishRecording() {
+    func finishRecording(language: String?) {
         guard case .recording(let startedAt) = state else { return }
         guard Date().timeIntervalSince(startedAt) >= Self.minimumRecordingDuration else {
             cancelRecording()
@@ -67,7 +67,7 @@ final class DictationCoordinator {
         do {
             let url = try recorder.stop()
             state = .transcribing
-            Task { await transcribe(url) }
+            Task { await transcribe(url, language: language) }
         } catch {
             recorder.cancel()
             state = .failure(error.localizedDescription, transcript: nil)
@@ -86,10 +86,9 @@ final class DictationCoordinator {
         NSPasteboard.general.setString(lastTranscript, forType: .string)
     }
 
-    private func transcribe(_ url: URL) async {
+    private func transcribe(_ url: URL, language: String?) async {
         defer { try? FileManager.default.removeItem(at: url) }
         do {
-            let language = Preferences.currentLanguage
             let text = try await transcriptionEngine.transcribe(audioAt: url, language: language)
             guard !text.isEmpty else {
                 state = .failure("No speech was detected.", transcript: nil)
@@ -106,7 +105,7 @@ final class DictationCoordinator {
                 state = .copied(text)
             }
         } catch {
-            logger.error("Transcription failed: \(error.localizedDescription, privacy: .public)")
+            logger.error("Transcription failed: \(error.localizedDescription, privacy: .private)")
             state = .failure("Transcription failed: \(error.localizedDescription)", transcript: nil)
         }
     }
