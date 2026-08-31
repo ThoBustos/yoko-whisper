@@ -39,4 +39,10 @@ final class ShortcutTests: XCTestCase {
         XCTAssertEqual(transitions, [.pressed, .released])
         XCTAssertFalse(state.isPressed)
     }
+
+    func testDisabledEventTapNotificationsRequestReenable() {
+        XCTAssertTrue(ShortcutTapLifecycle.shouldReenable(after: .tapDisabledByTimeout))
+        XCTAssertTrue(ShortcutTapLifecycle.shouldReenable(after: .tapDisabledByUserInput))
+        XCTAssertFalse(ShortcutTapLifecycle.shouldReenable(after: .keyDown))
+    }
 }

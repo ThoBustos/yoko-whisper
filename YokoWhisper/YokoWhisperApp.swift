@@ -21,6 +21,28 @@ struct YokoWhisperApp: App {
     }
 }
 
+struct IntegrationLifecycle {
+    private(set) var hasStarted = false
+
+    mutating func beginIfNeeded() -> Bool {
+        guard !hasStarted else { return false }
+        hasStarted = true
+        return true
+    }
+}
+
+enum ShortcutPermissionGuidance {
+    static func message(accessibilityGranted: Bool, listenGranted: Bool) -> String {
+        if !accessibilityGranted {
+            return "Accessibility access is required for the active global shortcut. Grant it in System Settings, then retry."
+        }
+        if !listenGranted {
+            return "Input Monitoring access may be required to receive global key events. Grant it in System Settings, then retry."
+        }
+        return "The global shortcut listener could not start. Check for a shortcut conflict, then retry."
+    }
+}
+
 @MainActor
 @Observable
 final class AppModel {
@@ -32,6 +54,7 @@ final class AppModel {
     let dictation: DictationCoordinator
     private let shortcuts = ShortcutService()
     private var hud: HUDController?
+    private var integrationLifecycle = IntegrationLifecycle()
     private(set) var shortcutError: String?
     let permissions = PermissionService()
     var onboardingComplete = UserDefaults.standard.bool(forKey: "onboardingComplete")
@@ -41,18 +64,15 @@ final class AppModel {
     }
 
     func startIntegrations() {
-        if hud == nil {
-            hud = HUDController(model: self)
-            dictation.onStateChange = { [weak self] state in self?.hud?.update(for: state) }
-            shortcuts.onPress = { [weak self] in self?.dictation.beginRecording() }
-            shortcuts.onRelease = { [weak self] in
-                guard let self else { return }
-                self.dictation.finishRecording(language: self.preferences.transcriptionLanguage)
-            }
-            shortcuts.onCancel = { [weak self] in
-                self?.dictation.cancelRecording()
-            }
+        guard integrationLifecycle.beginIfNeeded() else { return }
+        hud = HUDController(model: self)
+        dictation.onStateChange = { [weak self] state in self?.hud?.update(for: state) }
+        shortcuts.onPress = { [weak self] in self?.dictation.beginRecording() }
+        shortcuts.onRelease = { [weak self] in
+            guard let self else { return }
+            self.dictation.finishRecording(language: self.preferences.transcriptionLanguage)
         }
+        shortcuts.onCancel = { [weak self] in self?.dictation.cancelRecording() }
         startShortcutListener()
     }
 
@@ -81,17 +101,24 @@ final class AppModel {
     func clearLastTranscript() { dictation.clearLastTranscript() }
 
     func applyShortcutPreference() {
+        dictation.cancelRecording()
         startShortcutListener()
     }
 
     func requestShortcutAccess() {
-        CGRequestListenEventAccess()
+        dictation.cancelRecording()
+        if !AXIsProcessTrusted() {
+            permissions.requestAccessibility()
+        } else if !CGPreflightListenEventAccess() {
+            CGRequestListenEventAccess()
+        }
         startShortcutListener()
     }
 
     private func startShortcutListener() {
-        shortcutError = shortcuts.start(choice: preferences.shortcut)
-            ? nil
-            : "The global shortcut listener could not start. Regrant Accessibility or Input Monitoring access."
+        shortcutError = shortcuts.start(choice: preferences.shortcut) ? nil : ShortcutPermissionGuidance.message(
+            accessibilityGranted: AXIsProcessTrusted(),
+            listenGranted: CGPreflightListenEventAccess()
+        )
     }
 }
