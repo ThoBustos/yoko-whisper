@@ -29,7 +29,8 @@ final class ShortcutService: @unchecked Sendable {
     var onCancel: (@MainActor @Sendable () -> Void)?
 
     @MainActor
-    func start(choice: ShortcutChoice) {
+    @discardableResult
+    func start(choice: ShortcutChoice) -> Bool {
         stop()
         lock.withLock {
             activeChoice = choice
@@ -54,6 +55,7 @@ final class ShortcutService: @unchecked Sendable {
             guard event.keyCode == 53 else { return }
             Task { @MainActor in self?.onCancel?() }
         }
+        return eventTap != nil
     }
 
     @MainActor

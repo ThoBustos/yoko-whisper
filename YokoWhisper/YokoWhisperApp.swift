@@ -1,12 +1,17 @@
 import SwiftUI
+import CoreGraphics
 
 @main
 struct YokoWhisperApp: App {
     @State private var model = AppModel()
 
     var body: some Scene {
-        MenuBarExtra("Yoko Whisper", systemImage: "waveform") {
+        MenuBarExtra {
             MenuContentView(model: model)
+        } label: {
+            Image(systemName: "waveform")
+                .accessibilityLabel("Yoko Whisper")
+                .onAppear { model.startIntegrations() }
         }
         .menuBarExtraStyle(.window)
 
@@ -27,6 +32,7 @@ final class AppModel {
     let dictation: DictationCoordinator
     private let shortcuts = ShortcutService()
     private var hud: HUDController?
+    private(set) var shortcutError: String?
     let permissions = PermissionService()
     var onboardingComplete = UserDefaults.standard.bool(forKey: "onboardingComplete")
 
@@ -35,18 +41,19 @@ final class AppModel {
     }
 
     func startIntegrations() {
-        guard hud == nil else { return }
-        hud = HUDController(model: self)
-        dictation.onStateChange = { [weak self] state in self?.hud?.update(for: state) }
-        shortcuts.onPress = { [weak self] in self?.dictation.beginRecording() }
-        shortcuts.onRelease = { [weak self] in
-            guard let self else { return }
-            self.dictation.finishRecording(language: self.preferences.transcriptionLanguage)
+        if hud == nil {
+            hud = HUDController(model: self)
+            dictation.onStateChange = { [weak self] state in self?.hud?.update(for: state) }
+            shortcuts.onPress = { [weak self] in self?.dictation.beginRecording() }
+            shortcuts.onRelease = { [weak self] in
+                guard let self else { return }
+                self.dictation.finishRecording(language: self.preferences.transcriptionLanguage)
+            }
+            shortcuts.onCancel = { [weak self] in
+                self?.dictation.cancelRecording()
+            }
         }
-        shortcuts.onCancel = { [weak self] in
-            self?.dictation.cancelRecording()
-        }
-        shortcuts.start(choice: preferences.shortcut)
+        startShortcutListener()
     }
 
     func finishOnboarding() {
@@ -74,6 +81,17 @@ final class AppModel {
     func clearLastTranscript() { dictation.clearLastTranscript() }
 
     func applyShortcutPreference() {
-        shortcuts.start(choice: preferences.shortcut)
+        startShortcutListener()
+    }
+
+    func requestShortcutAccess() {
+        CGRequestListenEventAccess()
+        startShortcutListener()
+    }
+
+    private func startShortcutListener() {
+        shortcutError = shortcuts.start(choice: preferences.shortcut)
+            ? nil
+            : "The global shortcut listener could not start. Regrant Accessibility or Input Monitoring access."
     }
 }
