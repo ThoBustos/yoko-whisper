@@ -65,7 +65,7 @@ struct MenuContentView: View {
 
     private var recordControl: some View {
         VStack(spacing: 10) {
-            Button { model.toggleRecording() } label: {
+            Button { model.toggleRecordingFromMenu() } label: {
                 Image(systemName: recording ? "stop.fill" : "mic.fill")
                     .font(.system(size: 18, weight: .semibold))
                     .foregroundStyle(Brand.ink)

@@ -20,15 +20,22 @@ enum DictationState: Equatable, Sendable {
         case .failure: "ERROR"
         }
     }
+
+    var canBeginRecording: Bool {
+        switch self {
+        case .idle, .cancelled, .success, .failure: true
+        default: false
+        }
+    }
 }
 
-enum DictationEvent: Sendable { case toggle, cancel, recordingFinished(URL), transcriptionFinished(String), insertionFinished, failed(String) }
+enum DictationEvent: Sendable { case press, release, cancel, transcriptionFinished(String), insertionFinished, failed(String) }
 
 struct DictationReducer {
     static func reduce(_ state: DictationState, _ event: DictationEvent) -> DictationState {
         switch (state, event) {
-        case (.idle, .toggle): .recording(startedAt: Date())
-        case (.recording, .toggle), (.recording, .recordingFinished): .transcribing
+        case (.idle, .press): .recording(startedAt: Date())
+        case (.recording, .release): .transcribing
         case (.recording, .cancel): .cancelled
         case (.transcribing, .transcriptionFinished): .inserting
         case (.inserting, .insertionFinished): .success("")
