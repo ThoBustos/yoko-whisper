@@ -39,7 +39,10 @@ final class AppModel {
         hud = HUDController(model: self)
         dictation.onStateChange = { [weak self] state in self?.hud?.update(for: state) }
         shortcuts.onPress = { [weak self] in self?.dictation.beginRecording() }
-        shortcuts.onRelease = { [weak self] in self?.dictation.finishRecording() }
+        shortcuts.onRelease = { [weak self] in
+            guard let self else { return }
+            self.dictation.finishRecording(language: self.preferences.transcriptionLanguage)
+        }
         shortcuts.onCancel = { [weak self] in
             self?.dictation.cancelRecording()
         }
@@ -53,7 +56,7 @@ final class AppModel {
 
     func toggleRecordingFromMenu() {
         if case .recording = state {
-            dictation.finishRecording()
+            dictation.finishRecording(language: preferences.transcriptionLanguage)
         } else {
             dictation.beginRecording()
         }

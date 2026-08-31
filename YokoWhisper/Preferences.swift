@@ -26,10 +26,7 @@ enum ShortcutChoice: String, CaseIterable, Identifiable, Sendable {
 @MainActor
 @Observable
 final class Preferences {
-    static var currentLanguage: String? {
-        let language = UserDefaults.standard.string(forKey: "language") ?? "auto"
-        return language == "auto" ? nil : language
-    }
+    var transcriptionLanguage: String? { language == "auto" ? nil : language }
     var shortcut: ShortcutChoice { didSet { defaults.set(shortcut.rawValue, forKey: "shortcut") } }
     var language: String { didSet { defaults.set(language, forKey: "language") } }
     var launchAtLogin = false
