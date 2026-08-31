@@ -75,7 +75,7 @@ struct MenuContentView: View {
             .buttonStyle(.plain)
             .accessibilityLabel(recording ? "Stop dictation" : "Start dictation")
             Text(recording ? "Listening…" : "Press \(model.preferences.shortcut.label) to dictate").font(.callout)
-            Text(recording ? "Press again to finish · Esc to cancel" : "Transcript is inserted and copied")
+            Text(recording ? "Release to finish · Esc to cancel" : "Hold (model.preferences.shortcut.label) to dictate")
                 .font(.caption).foregroundStyle(.secondary)
         }
     }
