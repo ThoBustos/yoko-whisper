@@ -71,6 +71,8 @@ final class AppModel {
 
     func copyLastTranscript() { dictation.copyLastTranscript() }
 
+    func clearLastTranscript() { dictation.clearLastTranscript() }
+
     func applyShortcutPreference() {
         shortcuts.start(choice: preferences.shortcut)
     }

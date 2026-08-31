@@ -6,8 +6,9 @@ Thanks for helping improve Yoko Whisper.
 
 1. Use macOS 14 or newer on Apple Silicon with Xcode 16 or newer.
 2. Open `YokoWhisper.xcodeproj` or regenerate it with `xcodegen generate` after changing `project.yml`.
-3. Run the complete test command from the README before opening a pull request.
-4. Complete the relevant items in `docs/MANUAL-TEST-CHECKLIST.md` for changes involving audio, shortcuts, permissions, focus, or insertion.
+3. For on-device permission testing, copy `Config/Local.xcconfig.example` to `Config/Local.xcconfig` and set your Apple Development Team ID. The local file is ignored by Git.
+4. Run the complete test command from the README before opening a pull request.
+5. Complete the relevant items in `docs/MANUAL-TEST-CHECKLIST.md` for changes involving audio, shortcuts, permissions, focus, or insertion.
 
 Keep pull requests focused and keep every commit buildable. Add deterministic tests for state or policy changes; document system integrations that require manual verification.
 

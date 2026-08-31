@@ -2,6 +2,22 @@ import XCTest
 @testable import YokoWhisper
 
 final class InsertionRecoveryTests: XCTestCase {
+    @MainActor
+    func testSavedTranscriptCanBeCleared() {
+        let suiteName = UUID().uuidString
+        let defaults = UserDefaults(suiteName: suiteName)!
+        defaults.set("Sensitive words", forKey: "lastTranscript")
+
+        let coordinator = DictationCoordinator(defaults: defaults)
+        XCTAssertEqual(coordinator.lastTranscript, "Sensitive words")
+
+        coordinator.clearLastTranscript()
+
+        XCTAssertNil(coordinator.lastTranscript)
+        XCTAssertNil(defaults.string(forKey: "lastTranscript"))
+        defaults.removePersistentDomain(forName: suiteName)
+    }
+
     func testFailureCanRetainTranscript() {
         let state = DictationState.failure("Target closed", transcript: "Recovered words")
         guard case .failure(_, let transcript) = state else { return XCTFail() }

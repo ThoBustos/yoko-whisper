@@ -33,7 +33,7 @@ xcodebuild \
   test
 ```
 
-To run microphone and Accessibility flows, select your own development team for the `YokoWhisper` target in Xcode. No development-team identifier is committed.
+To run microphone and Accessibility flows, copy `Config/Local.xcconfig.example` to the ignored `Config/Local.xcconfig` and set your own `DEVELOPMENT_TEAM`. No development-team identifier is committed.
 
 `project.yml` is the XcodeGen source of truth when regenerating the project.
 
@@ -48,6 +48,8 @@ See [Architecture](docs/ARCHITECTURE.md) for service boundaries and [Contributin
 5. Confirm the transcript appears at the original cursor and remains available with Paste.
 
 If no editable cursor is available, Yoko Whisper leaves the transcript on the clipboard and shows `Copied` instead of claiming it was inserted. Secure text fields are always clipboard-only.
+
+For recovery across relaunches, the latest transcript is stored locally in app preferences until it is replaced or cleared from the menu. Yoko Whisper does not keep a transcript list or sync this value.
 
 Do not click the menu-bar microphone when testing cursor restoration; doing so changes the active UI away from the intended target. See the [manual test checklist](docs/MANUAL-TEST-CHECKLIST.md) for broader coverage.
 

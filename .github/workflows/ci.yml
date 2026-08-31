@@ -8,4 +8,11 @@ jobs:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v7
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Validate generated project and patch hygiene
+        run: |
+          git diff --check
+          xcodegen generate
+          git diff --exit-code
       - run: xcodebuild -project YokoWhisper.xcodeproj -scheme YokoWhisper -destination 'platform=macOS,arch=arm64' CODE_SIGNING_ALLOWED=NO test

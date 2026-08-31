@@ -16,6 +16,9 @@ targets:
   YokoWhisper:
     type: application
     platform: macOS
+    configFiles:
+      Debug: Config/Signing.xcconfig
+      Release: Config/Signing.xcconfig
     sources: [YokoWhisper]
     dependencies:
       - package: ArgmaxOSS

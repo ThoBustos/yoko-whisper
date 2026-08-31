@@ -86,6 +86,10 @@ final class DictationCoordinator {
         NSPasteboard.general.setString(lastTranscript, forType: .string)
     }
 
+    func clearLastTranscript() {
+        lastTranscript = nil
+    }
+
     private func transcribe(_ url: URL, language: String?) async {
         defer { try? FileManager.default.removeItem(at: url) }
         do {

@@ -21,8 +21,11 @@ struct MenuContentView: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("LAST TRANSCRIPT").font(Brand.label).foregroundStyle(.secondary)
                         Text(transcript).font(.callout).lineLimit(2).frame(maxWidth: .infinity, alignment: .leading)
-                        Button { model.copyLastTranscript() } label: { Label("Copy Again", systemImage: "doc.on.doc") }
-                            .controlSize(.small)
+                        HStack {
+                            Button { model.copyLastTranscript() } label: { Label("Copy Again", systemImage: "doc.on.doc") }
+                            Button("Clear Saved Transcript", role: .destructive) { model.clearLastTranscript() }
+                        }
+                        .controlSize(.small)
                     }
                 }
             }

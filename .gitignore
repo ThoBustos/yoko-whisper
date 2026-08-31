@@ -6,6 +6,9 @@ DerivedData/
 xcuserdata/
 YokoWhisper.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/
 
+# Personal Apple signing configuration.
+/Config/Local.xcconfig
+
 # Local implementation handoffs can contain machine paths and signing notes.
 /HANDOFF-MVP.md
 /docs/*HANDOFF*.md

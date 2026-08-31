@@ -21,6 +21,7 @@ Yoko Whisper is a native macOS menu-bar application with one bounded dictation p
 - Only one recording/transcription session may be active.
 - Temporary audio is removed after success, failure, or cancellation.
 - Every valid transcript is placed on the clipboard before insertion is attempted.
+- Only the latest transcript is retained in local preferences, and the user can clear it from the menu.
 - Secure fields never receive synthetic or Accessibility insertion.
 - Logs describe operations and failures without intentionally logging transcripts or recordings.
 
