@@ -8,7 +8,7 @@ Run on a clean macOS 14+ Apple Silicon account with network available for the fi
 - Recording: hold the shortcut, confirm recording starts on key-down and stops on key-up; test a <180 ms accidental press, silence, <1 second speech, background noise, Escape, 10 repeated cycles, overlapping triggers, and input disconnect.
 - Languages: automatic plus English, French, Spanish, and German representative phrases.
 - Insertion: mid-sentence and empty fields in TextEdit, Notes, browser textarea/contenteditable, Terminal, Electron input, and a code editor.
-- Recovery: close/change target during transcription; confirm the HUD says `Copied`, Copy Last Transcript works, and the final transcript remains on the clipboard.
+- Recovery: close/change target during transcription; confirm the HUD says `Copied`, Copy Last Transcript works, the latest transcript survives relaunch, and Clear Saved Transcript removes it.
 - Secure fields: confirm Yoko never injects text and reports `Copied` without exposing transcript contents in logs.
 - Shortcut: test every preset, modifier-first release ordering, key repeat, and collisions; confirm both key events are consumed and Escape cancels.
 - HUD: confirm the 148×36 pill stays top-center, never takes focus, follows the pointer display at recording start, joins full-screen Spaces, animates with input, and becomes static with Reduce Motion.

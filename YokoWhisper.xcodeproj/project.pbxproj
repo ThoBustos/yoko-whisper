@@ -67,6 +67,7 @@
 		D83F648D4B0C1BDF9B41982A /* ShortcutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutTests.swift; sourceTree = "<group>"; };
 		DC8164A5B97036495969C794 /* MenuContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuContentView.swift; sourceTree = "<group>"; };
 		F12B485B081145D1D0141922 /* Brand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brand.swift; sourceTree = "<group>"; };
+		F41EDA010FEEB2D511A8001F /* Signing.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Signing.xcconfig; sourceTree = "<group>"; };
 		FAE5D0D3CBC7641550976D96 /* TextInsertionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInsertionService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -85,10 +86,19 @@
 		036FF0AE8164E1ECFD02F854 = {
 			isa = PBXGroup;
 			children = (
+				04F66650F84FC318645E5F15 /* Config */,
 				9163E2C450707FCD685F36ED /* YokoWhisper */,
 				611B30AA32F7A07E2938CF08 /* YokoWhisperTests */,
 				A1A669DBB5E0FCA457D20F18 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		04F66650F84FC318645E5F15 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				F41EDA010FEEB2D511A8001F /* Signing.xcconfig */,
+			);
+			path = Config;
 			sourceTree = "<group>";
 		};
 		611B30AA32F7A07E2938CF08 /* YokoWhisperTests */ = {
@@ -332,6 +342,7 @@
 		};
 		26E225F0912B90355A24D686 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F41EDA010FEEB2D511A8001F /* Signing.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = YokoWhisper/YokoWhisper.entitlements;
@@ -449,6 +460,7 @@
 		};
 		F965799435E15683FEDCB387 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F41EDA010FEEB2D511A8001F /* Signing.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = YokoWhisper/YokoWhisper.entitlements;

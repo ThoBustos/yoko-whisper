@@ -1,0 +1,2 @@
+// Shared signing configuration. Personal team IDs belong in Local.xcconfig.
+#include? "Local.xcconfig"
