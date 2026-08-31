@@ -52,6 +52,7 @@ final class AppModel {
     var lastTranscript: String? { dictation.lastTranscript }
     let preferences = Preferences()
     let dictation: DictationCoordinator
+    private let soundPlayer: any AppSoundPlaying
     private let shortcuts = ShortcutService()
     private var hud: HUDController?
     private var integrationLifecycle = IntegrationLifecycle()
@@ -59,18 +60,22 @@ final class AppModel {
     let permissions = PermissionService()
     var onboardingComplete = UserDefaults.standard.bool(forKey: "onboardingComplete")
 
-    init(transcriptionEngine: (any TranscriptionEngine)? = nil) {
+    init(
+        transcriptionEngine: (any TranscriptionEngine)? = nil,
+        soundPlayer: any AppSoundPlaying = AppSoundPlayer()
+    ) {
         dictation = DictationCoordinator(transcriptionEngine: transcriptionEngine)
+        self.soundPlayer = soundPlayer
     }
 
     func startIntegrations() {
         guard integrationLifecycle.beginIfNeeded() else { return }
         hud = HUDController(model: self)
         dictation.onStateChange = { [weak self] state in self?.hud?.update(for: state) }
-        shortcuts.onPress = { [weak self] in self?.dictation.beginRecording() }
+        shortcuts.onPress = { [weak self] in self?.beginRecording() }
         shortcuts.onRelease = { [weak self] in
             guard let self else { return }
-            self.dictation.finishRecording(language: self.preferences.transcriptionLanguage)
+            self.finishRecording()
         }
         shortcuts.onCancel = { [weak self] in self?.dictation.cancelRecording() }
         startShortcutListener()
@@ -83,15 +88,15 @@ final class AppModel {
 
     func toggleRecordingFromMenu() {
         if case .recording = state {
-            dictation.finishRecording(language: preferences.transcriptionLanguage)
+            finishRecording()
         } else {
-            dictation.beginRecording()
+            beginRecording()
         }
     }
 
     func finishRecordingFromHUD() {
         guard case .recording = state else { return }
-        toggleRecordingFromMenu()
+        finishRecording()
     }
 
     func cancel() { dictation.cancelRecording() }
@@ -120,5 +125,17 @@ final class AppModel {
             accessibilityGranted: AXIsProcessTrusted(),
             listenGranted: CGPreflightListenEventAccess()
         )
+    }
+
+    private func beginRecording() {
+        dictation.beginRecording()
+        guard case .recording = state else { return }
+        soundPlayer.play(.recordingBegan)
+    }
+
+    private func finishRecording() {
+        guard case .recording = state else { return }
+        soundPlayer.play(.recordingReleased)
+        dictation.finishRecording(language: preferences.transcriptionLanguage)
     }
 }
