@@ -59,6 +59,11 @@ final class AppModel {
         }
     }
 
+    func finishRecordingFromHUD() {
+        guard case .recording = state else { return }
+        toggleRecordingFromMenu()
+    }
+
     func cancel() { dictation.cancelRecording() }
 
     func copyLastTranscript() { dictation.copyLastTranscript() }
