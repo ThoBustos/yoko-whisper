@@ -97,8 +97,7 @@ private struct DictationHUD: View {
 
     private var recordingControl: some View {
         HStack(spacing: 8) {
-            Image(systemName: "waveform")
-                .foregroundStyle(Brand.orange)
+            LiveWaveform(level: { model.recorder.level })
                 .frame(width: 24, height: 18)
             if isHovering {
                 Divider().frame(height: 16)
@@ -120,8 +119,7 @@ private struct DictationHUD: View {
     private var stateIndicator: some View {
         switch model.state {
         case .recording:
-            Image(systemName: "waveform")
-                .foregroundStyle(Brand.orange)
+            LiveWaveform(level: { model.recorder.level })
         case .transcribing, .inserting:
             ProgressView()
                 .controlSize(.mini)
@@ -147,5 +145,40 @@ private struct DictationHUD: View {
         case .failure(_, let transcript): transcript == nil ? "Try again" : "Copied"
         default: "Yoko Whisper"
         }
+    }
+}
+
+private struct LiveWaveform: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    let level: () -> Float
+
+    var body: some View {
+        if reduceMotion {
+            bars(level: max(level(), 0.18))
+        } else {
+            TimelineView(.animation(minimumInterval: 1.0 / 24.0)) { _ in
+                bars(level: level())
+            }
+        }
+    }
+
+    private func bars(level: Float) -> some View {
+        HStack(alignment: .center, spacing: 2) {
+            ForEach(Array(WaveformLevels.samples(level: level).enumerated()), id: \.offset) { _, sample in
+                Capsule()
+                    .fill(Brand.orange)
+                    .frame(width: 2.5, height: CGFloat(sample * 15 + 3))
+            }
+        }
+        .frame(height: 18)
+    }
+}
+
+enum WaveformLevels {
+    private static let weights: [Float] = [0.45, 0.78, 1, 0.72, 0.42]
+
+    static func samples(level: Float) -> [Float] {
+        let clamped = min(1, max(0, level))
+        return weights.map { max(0.08, clamped * $0) }
     }
 }
